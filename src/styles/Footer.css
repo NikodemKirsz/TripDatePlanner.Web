@@ -1,0 +1,13 @@
+﻿#footer {
+  background: linear-gradient(
+    rgb(100, 100, 100) 0%,
+    rgb(70, 70, 70) 100%
+  );
+  height: var(--footer-height);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  z-index: 900;
+}

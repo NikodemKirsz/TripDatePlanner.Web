@@ -1,0 +1,33 @@
+﻿.date-range-list {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.date-range-list .dates-title {
+  text-align: center;
+}
+
+.date-range-list .date-list {
+  background-color: #e5e5e5;
+  border-radius: 15px;
+  min-height: 150px;
+  max-height: 250px;
+  overflow-y: auto;
+  margin: 0 5px;
+  padding: 10px;
+  flex: 1;
+}
+
+.date-range-list .date-list button span {
+  padding: 2px !important;
+}
+
+.date-range-list .date-list .range {
+  /*width: 80%;*/
+  padding: 2px 6px;
+  margin: 0 5px;
+  background-color: #cecece;
+  border-radius: 10px;
+  font-size: 13px;
+}
