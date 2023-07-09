@@ -1,0 +1,52 @@
+﻿#trip .shadow-container {
+  margin: 20px;
+  padding: 10px;
+  flex: 1;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#trip .header-container {
+  margin: 0 10px;
+}
+
+#trip .info-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+#trip .side {
+  margin: 0;
+}
+
+#trip .title {
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 700;
+}
+
+#trip .date-range {
+  font-size: 15px;
+}
+
+#trip .key {
+  font-style: italic;
+}
+
+#trip .value {
+  font-weight: 700;
+}
+
+#trip .main-container {
+  margin: 10px 0;
+}
+
+#trip .participants {
+  margin: auto;
+  width: 80%;
+}
+
+#trip .participants-title {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+}

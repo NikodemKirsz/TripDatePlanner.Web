@@ -1,0 +1,15 @@
+﻿#participant-form #modal-header h3 {
+  width: 100%;
+  text-align: center;
+}
+
+#participant-form .dates-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+#participant-form .buttons-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}

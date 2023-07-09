@@ -1,0 +1,43 @@
+﻿#participant-summary button:focus {
+  --tw-ring-opacity: 0 !important;
+}
+
+#participant-summary button span {
+  padding: 4px !important;
+}
+
+#participant-summary .name {
+  text-align: left;
+  width: inherit;
+}
+
+#participant-summary .buttons {
+  display: flex;
+  justify-content: end;
+}
+
+#participant-summary td,
+#participant-summary th {
+  padding: 10px 4px;
+  text-align: center;
+}
+
+#participant-summary .name-cell {
+  width: 40%;
+}
+
+#participant-summary .pdays-cell {
+  width: 25%;
+}
+
+#participant-summary .rdays-cell {
+  width: 25%;
+}
+
+#participant-summary .edit-cell {
+  width: 5%;
+}
+
+#participant-summary .remove-cell {
+  width: 5%;
+}

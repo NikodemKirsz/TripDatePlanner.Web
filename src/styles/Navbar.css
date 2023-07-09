@@ -1,0 +1,29 @@
+﻿#navbar {
+  background: linear-gradient(
+    90deg,
+    rgb(116, 255, 84) 0%,
+    rgb(0, 203, 87) 100%
+  );
+  height: var(--navbar-height);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  z-index: 900;
+}
+
+#navbar .side {
+  width: max-content;
+  margin: 0 10px;
+}
+
+#navbar .links {
+  list-style: none;
+  display: flex;
+  margin: 0;
+}
+
+#navbar .links .link {
+  margin: 0 10px;
+}
