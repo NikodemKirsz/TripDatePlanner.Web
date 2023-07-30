@@ -13,3 +13,7 @@
   display: flex;
   justify-content: space-evenly;
 }
+
+#participant-form button[aria-label="Close"] {
+  display: none;
+}

@@ -1,20 +1,31 @@
 ﻿import '../styles/DateRangeList.css';
-import DateRange from "../models/DateRange";
-import { Indexed } from "../models/Indexed";
 import { Button } from "flowbite-react";
-import { RxCross2 } from "react-icons/rx";
-import { FiPlusCircle } from "react-icons/fi";
-import { Dispatch, SetStateAction } from "react";
+import { RxCross2, RxPlus } from "react-icons/rx";
+import { Dispatch, SetStateAction, useState } from "react";
+import DateRange from "../models/DateRange";
+import DateRangePicker from "./DateRangePicker";
 
-function DateRangeList({datesText, styleText, dateRanges, setDateRanges}: {
+function DateRangeList({datesText, styleText, dateRanges, setDateRanges, tripDateRange}: {
   datesText: string,
-  styleText: string
-  dateRanges: Indexed<DateRange>[],
-  setDateRanges: Dispatch<SetStateAction<Indexed<DateRange>[]>>
+  styleText: string,
+  dateRanges: DateRange[],
+  setDateRanges: Dispatch<SetStateAction<DateRange[]>>,
+  tripDateRange: DateRange,
 }) {
+  const [clearTick, setClearTick] = useState<boolean>(false);
+  const [dateRange, setDateRange] = useState<DateRange | null>(null);
   
-  const removeDateRange = (id: string | number) => {
-    setDateRanges(arr => arr.filter(range => range.id !== id))
+  const removeDateRange = (id: string): void => {
+    setDateRanges(arr => arr.filter(range => range.getId() !== id));
+  }
+
+  const addDateRange = () => {
+    if (dateRange == null)
+      return;
+    
+    setDateRanges(arr => [...arr, dateRange]);
+    setClearTick(old => !old);
+    setDateRange(null);
   }
   
   return (
@@ -22,20 +33,22 @@ function DateRangeList({datesText, styleText, dateRanges, setDateRanges}: {
       <div className={`dates-title ${styleText}`}>{datesText}</div>
       <div className="date-list">
         {dateRanges.map(range =>
-          <div key={range.id} className="flex text-sm my-2">
-            <Button
-              color="failure"
-              onClick={() => removeDateRange(range.id)}
-            >
-              <RxCross2/>
-            </Button>
-            <span className="range">{range.entity.toString()}</span>
+          <div key={range.getId()} className="flex text-sm my-2">
+            <Button color="failure" onClick={() => removeDateRange(range.getId())}><RxCross2/></Button>
+            <span className="range">{range.toString(false, '/')}</span>
           </div>
         )}
-        <Button color="success"><FiPlusCircle size={14}/></Button>
+        <div key={"new-date"} className="flex text-sm my-2">
+          <Button color="success" onClick={addDateRange}><RxPlus/></Button>
+          <DateRangePicker
+            tripDateRange={tripDateRange}
+            onRangeChange={val => setDateRange(val)}
+            clearTick={clearTick}
+          />
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default DateRangeList;

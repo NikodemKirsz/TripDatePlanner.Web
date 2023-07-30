@@ -1,88 +1,110 @@
 ﻿import '../styles/ParticipantForm.css';
-import Participant from "../models/Participant";
 import { Button, Label, Modal, TextInput } from "flowbite-react";
-import { useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useEffect, useRef, useState } from "react";
+import { Participant } from "../models/Participant";
 import DateRange from "../models/DateRange";
-import { FiPlusCircle } from 'react-icons/fi';
-import DateOnly from "../models/DateOnly";
-import { RxCross2 } from "react-icons/rx";
-import { Indexed } from "../models/Indexed";
 import DateRangeList from "./DateRangeList";
+import { Trip } from "../models/Trip";
 
-function ParticipantForm({participant, show, onClose}: { 
-  participant: Participant | null, 
+function ParticipantForm({participant = null, setParticipant, isEdit, trip, show, onClose, saveParticipant}: { 
+  participant: Participant | null,
+  setParticipant: Dispatch<SetStateAction<Participant | null>>,
+  trip: Trip,
+  isEdit: boolean,
   show: boolean,
   onClose: () => void,
+  saveParticipant: (p: Participant) => Promise<void>,
 }) {
-  const datesExample: Indexed<DateRange>[] = [
-    {id: "1", entity: new DateRange(DateOnly.today(), DateOnly.today())},
-    {id: "2", entity: new DateRange(DateOnly.today(), DateOnly.today())},
-    {id: "3", entity: new DateRange(DateOnly.today(), DateOnly.today())},
-    {id: "4", entity: new DateRange(DateOnly.today(), DateOnly.today())},
-    {id: "5", entity: new DateRange(DateOnly.today(), DateOnly.today())},
-    {id: "6", entity: new DateRange(DateOnly.today(), DateOnly.today())},
-    {id: "7", entity: new DateRange(DateOnly.today(), DateOnly.today())},
-    {id: "8", entity: new DateRange(DateOnly.today(), DateOnly.today())},
-  ]                
+  const [name, setName] = useState<string>(participant?.name ?? "");
+  const [preferredRanges, setPreferredRanges] = useState<DateRange[]>(participant?.preferredRanges ?? []);
+  const [rejectedRanges, setRejectedRanges] = useState<DateRange[]>(participant?.rejectedRanges ?? []);
   
-  const [preferredDates, setPreferredDates] = useState<Indexed<DateRange>[]>(datesExample);
-  const [rejectedDates, setRejectedDates] = useState<Indexed<DateRange>[]>([]);
+  const onDecline = () => {
+    setDataFromParticipant(null);
+    onClose();
+  }
   
+  const onSave = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    const newParticipant: Participant = {
+      id: participant?.id ?? 0,
+      tripId: trip.id,
+      name: name,
+      preferredRanges: preferredRanges,
+      rejectedRanges: rejectedRanges,
+      isEdit: isEdit,
+    };
+
+    await saveParticipant(newParticipant);
+    
+    onClose();
+  }
   
+  const setDataFromParticipant = (p: Participant | null) => {
+    setName(participant?.name ?? "");
+    setPreferredRanges(participant?.preferredRanges ?? []);
+    setRejectedRanges(participant?.rejectedRanges ?? []);
+  }
+  
+  useEffect(() => {
+    setDataFromParticipant(null);
+  }, [participant]);
   
   return (
     <Modal
       id="participant-form"
+      root={document.body}
       show={show}
       size="xl"
-      popup
       dismissible
       onClose={onClose} 
     >
-      <Modal.Header id="modal-header">
-        &nbsp;&nbsp;&nbsp;Participant
-      </Modal.Header>
+      <Modal.Header id="modal-header">Participant</Modal.Header>
       <Modal.Body>
-        <div className="space-y-6">
-          <div>
-            <div className="mb-0 ml-2 block">
-              <Label htmlFor="name" value="Name"/>
+        {!!trip.allowedRange && (
+          <form className="space-y-6" onSubmit={e => onSave(e)} onReset={onDecline}>
+            <div>
+              <div className="mb-0 ml-2 block">
+                <Label htmlFor="participant-name" value="Name"/>
+              </div>
+              <TextInput
+                id="participant-name"
+                onChange={e => setName(e.target.value)}
+                value={name}
+                placeholder="John Thomas"
+                autoComplete="name"
+                required
+              />
             </div>
-            <TextInput id="name" placeholder="John Thomas" required/>
-          </div>
-          <div className="dates-container">
-            <DateRangeList
-              datesText="Preferred dates"
-              styleText="text-green-500"
-              dateRanges={preferredDates}
-              setDateRanges={setPreferredDates}
-            />
-            <div className="vl"/>
-            <DateRangeList
-              datesText="Rejected dates"
-              styleText="text-red-500"
-              dateRanges={rejectedDates}
-              setDateRanges={setRejectedDates}
-            />
-          </div>
-          <div className="buttons-container">
-            <Button
-              onClick={onClose}
-              color="success"
-            >
-              Save
-            </Button>
-            <Button
-              onClick={onClose}
-              color="failure"
-            >
-              Close
-            </Button>
-          </div>
-        </div>
+            <div className="dates-container">
+              <DateRangeList
+                datesText="Preferred dates"
+                styleText="text-green-500"
+                dateRanges={preferredRanges}
+                setDateRanges={setPreferredRanges}
+                tripDateRange={trip.allowedRange}
+              />
+              
+              <div className="vl"/>
+              
+              <DateRangeList
+                datesText="Rejected dates"
+                styleText="text-red-500"
+                dateRanges={rejectedRanges}
+                setDateRanges={setRejectedRanges}
+                tripDateRange={trip.allowedRange}
+              />
+            </div>
+            <div className="buttons-container">
+              <Button type="submit" color="success">{isEdit ? "Save" : "Add"}</Button>
+              <Button type="reset" color="failure">Close</Button>
+            </div>
+          </form>
+        )}
       </Modal.Body>
     </Modal>
-  )
+  );
 }
 
 export default ParticipantForm;

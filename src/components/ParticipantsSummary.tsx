@@ -1,10 +1,16 @@
 ﻿import '../styles/ParticipantsSummary.css';
-import Participant from "../models/Participant";
-import {Button, Table} from 'flowbite-react';
-import {RxCross2} from 'react-icons/rx'
-import {FiSettings} from 'react-icons/fi'
+import { Button, Table } from 'flowbite-react';
+import { RxCross2 } from 'react-icons/rx'
+import { FiSettings } from 'react-icons/fi'
+import { Participant } from "../models/Participant";
 
-function ParticipantsSummary({participants}: { participants: Participant[] }) {
+function ParticipantsSummary({participants, onEdit, onRemove}: {
+  participants: Participant[],
+  onEdit: (participant: Participant) => void,
+  onRemove: (participant: Participant) => void,
+}) {
+  
+  
   return (
     <Table id="participant-summary" hoverable>
       <Table.Head>
@@ -34,18 +40,28 @@ function ParticipantsSummary({participants}: { participants: Participant[] }) {
               {p.name}
             </Table.Cell>
             <Table.Cell className="pdays-cell">
-              12
+              {p?.preferredDays ?? '-'}
             </Table.Cell>
             <Table.Cell className="rdays-cell">
-              54
+              {p?.rejectedDays ?? '-'}
             </Table.Cell>
             <Table.Cell className="edit-cell">
-              <Button color="warning" size="xs" className="mx-1">
+              <Button
+                color="warning"
+                size="xs"
+                className="mx-1"
+                onClick={() => onEdit(p)}
+              >
                 <FiSettings size={14}/>
               </Button>
             </Table.Cell>
             <Table.Cell className="remove-cell">
-              <Button color="failure" size="xs" className="mx-1">
+              <Button
+                color="failure"
+                size="xs"
+                className="mx-1"
+                onClick={() => onRemove(p)}
+              >
                 <RxCross2 size={14}/>
               </Button>
             </Table.Cell>
@@ -53,7 +69,7 @@ function ParticipantsSummary({participants}: { participants: Participant[] }) {
         )}
       </Table.Body>
     </Table>
-  )
+  );
 }
 
 export default ParticipantsSummary;

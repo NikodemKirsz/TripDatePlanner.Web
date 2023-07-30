@@ -1,0 +1,13 @@
+﻿#trip-form button[aria-label="Close"] {
+  display: none;
+}
+
+#trip-form .buttons-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#trip-form .number-input {
+  min-width: 40px;
+}

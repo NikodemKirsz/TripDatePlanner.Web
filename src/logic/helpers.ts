@@ -4,3 +4,6 @@
     ? str.padStart(count, char) 
     : str.padEnd(count, char);
 }
+export function refreshPage() {
+  window.location.reload();
+}
